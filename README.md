@@ -116,10 +116,7 @@ object Program {
    ```bash
    dotnet run -- project/main.cds
    ```
-4. El compilador generará un archivo `program.out`. Ejecútalo en WSL:
-   ```bash
-   wsl ./program.out
-   ```
+4. El compilador generará un archivo `program.out`. Se ejecutará solo con wsl 
 
 ---
 
