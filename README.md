@@ -131,32 +131,8 @@ object Program {
 
 ---
 
-## 🎨 Iconos Relevantes
-🖥️ ⚙️ 🔴 🛠️ 📚 🚀
-
----
-
-## 🗺️ Roadmap de Próximas Funcionalidades
-
-- [ ] Soporte para arreglos dinámicos.
-- [ ] Implementación de herencia entre clases.
-- [ ] Optimización de memoria avanzada en LLVM.
-- [ ] Editor Web interactivo para probar Redlang.
-
-## 🤝 Contribución
-
-¡Las contribuciones son lo que hacen que la comunidad de código abierto sea un lugar increíble para aprender, inspirar y crear! Cualquier contribución que hagas será **muy apreciada**.
-
-1. Haz un Fork del proyecto.
-2. Crea tu Rama de Característica (`git checkout -b feature/AmazingFeature`).
-3. Haz un Commit de tus cambios (`git commit -m 'Add some AmazingFeature'`).
-4. Haz un Push a la Rama (`git push origin feature/AmazingFeature`).
-5. Abre un Pull Request.
-
----
-
 <p align="center">
-  Hecho por <a href="https://github.com/selin-intec">Seli</a> - 2026
+  Hecho por <a href="https://github.com/selin-intec">Seline Feliz</a> - 2026
 </p>
 
 <p align="center">
