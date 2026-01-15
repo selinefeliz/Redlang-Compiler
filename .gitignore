@@ -1,0 +1,16 @@
+# Visual Studio Fixes
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build Results
+[Bb]in/
+[Oo]bj/
+
+# Rider
+.idea/
+
+# OS Files
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,194 @@
+/*Signos Basicos*/
+<comma> ::= ","
+<dot> ::= "."
+<colon> ::= ":"
+<semi_colon> ::= ";"
+<equal> ::= "="
+<underscore> ::= "_"
+<question> ::= "?"
+<space> ::= " "
+<o_paren> ::= "("
+<c_paren> ::= ")"
+<o_brackets> ::= "["
+<c_brackets> ::= "]"
+<o_braces> ::= "{"
+<c_braces> ::= "}"
+/*Signos Basicos*/
+<plus> ::= "+"
+<minus> ::= "-"
+<multiply> ::= "*"
+<divide> ::= "/"
+<modulo> ::= "%"
+<signos> ::= <plus> | <minus> | <multiply> | <divide> | <modulo>
+/*Expresiones*/
+<LThan> ::= "<"
+<GThan> ::= ">"
+<LTE> ::= "<="
+<GTE> ::= ">=" 
+<EQ> ::= "=="
+<NEQ> ::= "!="
+<AND> ::= "and"
+<OR> ::= "or"
+<NOT> ::= "not"
+<newline> ::= "\n"
+<ws> ::= <space> | <newline> | "\t"
+
+<Expresion> ::= <Condicion> | <ExpresionMatematica> | <LlamadaFuncion>
+<Condicion> ::= <CondicionAND> (<space>+ <OR> <space>+ <CondicionAND>)*
+<CondicionAND> ::= <CondicionAND> <space>+ <AND> <space>+ <CondicionRelacional> | <CondicionRelacional>
+<CondicionRelacional> ::= <ExpresionMatematica> <space>* <Comparador> <space>* <ExpresionMatematica> | <bool> | <o_paren> <space>* <Condicion> <space>* <c_paren>
+<Comparador> ::= <EQ> | <NEQ> | <GTE> | <LTE> | <GThan> | <LThan>
+<ExpresionMatematica> ::= <ExpresionMatematica> <space>* <plus> <space>* <Termino>
+                        | <ExpresionMatematica> <space>* <minus> <space>* <Termino>
+                        | <Termino>
+<Termino> ::= <Termino> <space>* <multiply> <space>* <Factor>
+            | <Termino> <space>* <divide> <space>* <Factor>
+            | <Termino> <space>* <modulo> <space>* <Factor>
+            | <Factor> 
+<Factor> ::= <name>
+           | <literal>
+           | <AccesoArreglo>
+           | <AccesoMiembro>
+           | <len_call>
+           | <LlamadaFuncion>
+           | <FactorNegado>
+           | <ask_call>
+           | <convert_call>
+           | <o_paren> <space>* <Expresion> <space>* <c_paren>
+<FactorNegado> ::= <minus> <space>* <Factor>
+                 | <NOT> <space>+ <Factor>
+ 
+/* Acceso a arreglos: indexación */
+<array> ::= <o_brackets> <space>* ( <Expresion> ( <space>* <comma> <space>* <Expresion> )* )? <space>* <c_brackets>
+<AccesoArreglo> ::= <name> <o_brackets> <Expresion> <c_brackets>
+/* Acceso a miembros de objetos o llamadas a métodos */
+<AccesoMiembro> ::= <name> <dot> <name>  
+/*keywords*/
+<func> ::= "func"
+<entry> ::= "entry"
+<declare> ::= "declare"
+<set> ::= "set"
+<object> ::= "object"
+<use> ::= "use"
+<check> ::= "check"
+<otherwise> ::= "otherwise"
+<loop> ::= "loop"
+<repeat> ::= "repeat"
+<gives> ::= "gives"
+/*Tipos de Datos*/
+/*<data_type> ::= "i" | "f" | "b" | "s" | "i?" | "f?" | "b?" | "s?" | <name> "?" */
+<type_base>  ::= "i" | "f" | "b" | "s" | <name>
+<data_type>  ::= <type_base> | <type_base> <question> 
+/*<name> "?" para el ClassName?*/
+/*Digitos*/
+<digit> ::= [0-9]
+<digitN> ::= [1-9]
+/*Literales*/
+<int> ::= "-"? ("0" | <digitN> <digit>*)
+<float> ::= "-"? (<int> <dot> <digit>+)
+<bool> ::= "true" | "false"
+<key_null> ::= "null"
+<string> ::= "\"" <string_char>* "\""
+<string_char> ::= <escaped_char>
+                | <unescaped_char>
+<escaped_char> ::= "\\" "n"
+                 | "\\" "t"
+                 | "\\" "\""
+                 | "\\" "\\"
+<unescaped_char> ::= [A-Z] | [a-z] | [0-9] | <space>
+                   | "!" | "#" | "$" | "%" | "&" | "'" | "(" | ")" 
+                   | "*" | "+" | "," | "-" | "." | "/" | ":" | ";" | "<" | "=" | ">" | "?" | "@" 
+                   | "[" | "]" | "^" | "_" | "`" | "{" | "|" | "}" | "~"
+/* LITERAL (combinación de los anteriores) */
+<literal> ::= <key_null> | <bool> | <int> | <float> | <string>
+
+/*Identificadores*/
+<name> ::= ([a-z] | [A-Z] | <underscore>) ([a-z] | [A-Z] | [0-9] | <underscore>)*
+/*Sentencias Simples*/
+
+/*declaracion*/
+<param> ::= <name> <space>* <colon> <space>* <data_type>
+<param_list> ::= <param> (<space>* <comma> <space>* <param>)*  
+<param_list_opt> ::= <param> <param_list_rec> | <space>
+<param_list_rec> ::= <space>* <comma> <space>* <param> <param_list_rec> | <space>
+<ctor> ::= <name> <space>* <o_paren> <ListaArgumentosOpcional> <c_paren>
+<decl_NI> ::= <decl_head> <semi_colon>
+<decl_head> ::= <declare> <space>+ <name> <space>* <colon> <space>* (<data_type> | <name>) <space>* (<o_brackets> <space>* <int> <space>* <c_brackets>)?
+<decl_I> ::= <decl_head> (<space>* <equal> <space>* (<Inicializador> | <LlamadaConstructor>))? <semi_colon>
+<Inicializador> ::= <Expresion> | <LlamadaFuncion> | <array> | <LlamadaConstructor>
+<LlamadaConstructor> ::= <name> <o_paren> <ListaArgumentosOpcional> <c_paren>
+<Sentencia> ::= <decl_NI> | <decl_I> | <set_stmt> | <return_stmt> 
+             | <stmt_control> | <LlamadaFuncion> <semi_colon> 
+             | <ask_call> | <show_call>
+             | <file_call> | <convert_call> | <len_call>
+             
+<return_stmt> ::= <gives> <space>+ <Expresion> <space>* <semi_colon> | <gives> <space>* <semi_colon>
+<declare_stmt> ::= <decl_NI> | <decl_I>
+
+
+<ask_call> ::= "ask" <space>* <o_paren> <space>* <name> <space>* <c_paren> <semi_colon>?
+<show_call> ::= "show" <space>* <o_paren> (<ListaArgumentos> | <space>) <space>* <c_paren> <semi_colon>?
+
+<len_call> ::= "len" <space>* <o_paren> <space>* <name> <space>* <c_paren>
+<convert_call> ::= "convertToInt" <space>* <o_paren> <Expresion> <c_paren>
+                 | "convertToFloat" <space>* <o_paren> <Expresion> <c_paren>
+                 | "convertToBoolean" <space>* <o_paren> <Expresion> <c_paren>
+<file_call> ::= "readfile" <space>* <o_paren> <Expresion> <c_paren>
+              | "writefile" <space>* <o_paren> <Expresion> <space>* <comma> <space>* <Expresion> <c_paren>
+
+
+/*Funciones*/
+<func_decl> ::= <func> <space>+ <name> <space>* <o_paren> (<param> (<space>* <comma> <space>* <param>)*)? <c_paren> <space>* <colon> <space>* <data_type> <space>* <block>
+<entry_func_decl> ::= <entry> <space>+ <func_decl>
+/* Llamadas a funciones */
+
+<LlamadaFuncion> ::= (<name> | <AccesoMiembro>) <o_paren> <ListaArgumentosOpcional> <c_paren> <semi_colon>?
+
+<ListaArgumentos> ::= <Expresion> (<space>* <comma> <space>* <Expresion>)*
+<ListaArgumentosOpcional> ::= <ListaArgumentos> | <space> | E
+/* Argumentos adicionales (recursivos) */
+<ListaArgumentosSiguientes> ::= <space>* <comma> <space>* <Expresion>
+                             | <Expresion> | <o_paren> <c_paren> | <space>
+/*Estructura de Control*/
+
+<stmt_control> ::= <check_stmt> | <loop_stmt> | <repeat_stmt>
+<check_stmt> ::= <check> <space>* <o_paren> <space>* (<Condicion> | <Expresion>) <ws>* <c_paren> <ws>* <block> (<ws>+ <otherwise> <ws>* <block>)?
+
+<loop_stmt> ::= <loop> <ws>* <o_paren> <ws>* <LoopInitList> <semi_colon> <ws>* (<Condicion> | <Expresion>) <semi_colon> <ws>* <LoopActionList> <ws>* <c_paren> <ws>* <block>
+
+<LoopInitList> ::= (<declare_stmt_no_sc> | <set_stmt_no_sc> | <LlamadaFuncion>) 
+                   (<semi_colon> <space>* (<declare_stmt_no_sc> | <set_stmt_no_sc> | <LlamadaFuncion>))* 
+                   | <space>
+
+<LoopActionList> ::= (<set_stmt_no_sc> | <LlamadaFuncion> | <show_call> | <ask_call> | <file_call> | <convert_call> | <len_call>) 
+                     (<semi_colon> <space>* "(...)")*
+                     (<semi_colon>)?
+
+<AccionList> ::= (<set_stmt_no_sc> | <LlamadaFuncion> | <show_call> | <ask_call> | <file_call> | <convert_call> | <len_call>) 
+                 (<semi_colon> <space>* (<set_stmt_no_sc> | <LlamadaFuncion> | <show_call> | <ask_call> | <file_call> | <convert_call> | <len_call>))* 
+                 | <space>
+<LoopInit> ::= ((<declare_stmt_no_sc> | <set_stmt_no_sc> | <LlamadaFuncion>) (<semi_colon> (<declare_stmt_no_sc> | <set_stmt_no_sc> | <LlamadaFuncion>))*)? E
+<AccionLoop> ::= ((<set_stmt_no_sc> | <LlamadaFuncion>) (<semi_colon> (<set_stmt_no_sc> | <LlamadaFuncion>))*)? E
+<repeat_stmt> ::= <repeat> <space>* <o_paren> <space>* <Condicion> <space>* <c_paren> <ws>* <block>
+<OtherwiseOpcional> ::= <space>+ <otherwise> <space>* <block> | <space>
+
+
+<set_stmt_no_sc> ::= <set> <space>+ <SetObjetivo> <space>* <equal> <space>* <Expresion>
+<declare_stmt_no_sc> ::= <decl_head> (<space>* <equal> <space>* <Expresion>)?
+<SetObjetivo> ::= <name> | <AccesoArreglo>
+<set_stmt> ::= <set> <space>+ <SetObjetivo> <space>* <equal> <space>* <Expresion> <semi_colon>
+             | <set> <space>+ <name> <space>* <equal> <space>* <array> <semi_colon>
+
+
+/*Bloque*/
+<block> ::= <o_braces> <ws>* "..." <ws>* <c_braces> 
+          | <o_braces> <ws>* <ListaSentencias> <ws>* <c_braces>
+<ListaSentencias> ::= (<Sentencia> (<ws>* <Sentencia>)*)? 
+/*Clases*/
+<ListaMiembros> ::= ( <decl_NI> | <decl_I> | <func_decl> ) ( <ws>+ ( <decl_NI> | <decl_I> | <func_decl> ) )* | <ws>*
+<class_decl> ::= <object> <space>+ <name> <ws>* <o_braces> <ws>* <ListaMiembros> <ws>* <c_braces>
+
+<use_stmt> ::= <use> <space>+ <name> <space>* <semi_colon>
+
+<StatementGlobal> ::= <use_stmt> | <class_decl> | <entry_func_decl> | <func_decl>
+<Program> ::= ( <StatementGlobal> ( <ws>* <StatementGlobal> )* ) | <ws>
